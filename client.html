@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<header>
+<script>
+var xmlhttp = new XMLHttpRequest();
+var url = "http://localhost";
+ 
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        var arr = JSON.parse(xmlhttp.responseText);
+                console.log(arr);
+        addToContent(arr);
+    }
+}
+       
+function myFunction() {
+                xmlhttp.open("GET", url, true);
+                xmlhttp.send();
+}
+ 
+function addToContent(arr) {
+    var out = "<ul>";
+    var i;
+    for(i = 0; i < arr.length; i++) {
+        out += "<li>" + arr[i].author + " : "+ arr[i].displayName + "</li>";
+    }
+    document.getElementById('content').innerHTML = out + "</ul>";
+}
+ 
+</script>
+</header>
+<body>
+<button onclick="myFunction()">Get Data</button>
+<div id="content">
+</div>
+</body>
+</html>
