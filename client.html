@@ -19,12 +19,15 @@ function myFunction() {
 }
  
 function addToContent(arr) {
-    var out = "<ul>";
+    var out = "<dl>";
     var i;
     for(i = 0; i < arr.length; i++) {
-        out += "<li>" + arr[i].author + " : "+ arr[i].displayName + "</li>";
+        out += "<dt>" + arr[i].isbn + "</dt>";
+        out += "<dd>" + arr[i].author + "</dd>";
+        out += "<dd>" + arr[i].title + "</dd>";
+        out += "<dd>" + arr[i].year + "</dd>";
     }
-    document.getElementById('content').innerHTML = out + "</ul>";
+    document.getElementById('content').innerHTML = out + "</dl>";
 }
  
 </script>
