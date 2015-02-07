@@ -1,5 +1,8 @@
+"use strict";
 var http = require('http');
 var _ = require('lodash');
+var bookDb = require('./bookdb');
+
 var dataProvider = dataProvider || {};
 dataProvider = (function() {
         var combinedHtml = "<html><body>Data not available</body></html>"; 
@@ -26,6 +29,7 @@ dataProvider = (function() {
                         res.on("end", function() {
                                 authorData = _.map(JSON.parse(body).records, bookMapper);
                                 console.log("Got list of books by author:", authorData);
+                                bookDb.insertBooks(authorData);
                         });
                 }).on("error", function(e) {
                         console.log("Error: ", e);
@@ -43,6 +47,7 @@ dataProvider = (function() {
                         res.on("end", function() {
                                 titleData = _.map(JSON.parse(body).records, bookMapper);
                                 console.log("Got list of by title:", titleData);
+                                bookDb.insertBooks(authorData);
                         });
                 }).on("error", function(e) {
                         console.log("Error: ", e);
@@ -69,6 +74,13 @@ dataProvider = (function() {
             return JSON.stringify(titleData);
         }
 
+        var getCombinedDataAsJSONFromDB = function (){
+            bookDb.readBooksFromDB();
+            var books = bookDb.getBooks();
+            console.log(books); 
+            return JSON.stringify(books);
+        }
+
         var initializeData = function (){
             getBooksByAuthor();
             getBooksByTitle();
@@ -77,7 +89,8 @@ dataProvider = (function() {
         return {
             initializeData: initializeData,
             getCombinedDataAsHTML: getCombinedDataAsHTML,
-            getCombinedDataAsJSON: getCombinedDataAsJSON
+            getCombinedDataAsJSON: getCombinedDataAsJSON,
+            getCombinedDataAsJSONFromDB: getCombinedDataAsJSONFromDB
         };
 }());
 
